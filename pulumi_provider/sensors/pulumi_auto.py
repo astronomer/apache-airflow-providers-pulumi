@@ -4,7 +4,7 @@ from airflow.exceptions import AirflowException
 from airflow.sensors.base import BaseSensorOperator
 from airflow.utils.decorators import apply_defaults
 
-from sample_provider.hooks.sample_hook import SampleHook
+from pulumi_provider.hooks.pulumi_auto import SampleHook
 
 
 class SampleSensor(BaseSensorOperator):
@@ -27,9 +27,9 @@ class SampleSensor(BaseSensorOperator):
 
     # Specify the arguments that are allowed to parse with jinja templating
     template_fields = [
-        'endpoint',
-        'request_params',
-        'headers',
+        "endpoint",
+        "request_params",
+        "headers",
     ]
 
     @apply_defaults
@@ -37,8 +37,8 @@ class SampleSensor(BaseSensorOperator):
         self,
         *,
         endpoint: str,
-        sample_conn_id: str = 'conn_sample',
-        method: str = 'GET',
+        sample_conn_id: str = "conn_sample",
+        method: str = "GET",
         request_params: Optional[Dict[str, Any]] = None,
         headers: Optional[Dict[str, Any]] = None,
         **kwargs: Any,
@@ -54,7 +54,7 @@ class SampleSensor(BaseSensorOperator):
     def poke(self, context: Dict[Any, Any]) -> bool:
         from airflow.utils.operator_helpers import make_kwargs_callable
 
-        self.log.info('Poking: %s', self.endpoint)
+        self.log.info("Poking: %s", self.endpoint)
         try:
             response = self.hook.run(
                 self.endpoint,

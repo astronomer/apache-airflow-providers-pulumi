@@ -3,14 +3,14 @@
 # repo. The modules listed should pertain to latest, released version of the repo.
 
 # Python package name.
-package-name: sample_provider
+package-name: pulumi_provider
 # The name of the provider to be displayed on the Registry.
-display-name: Sample Provider
+display-name: Pulumi Provider
 # A description to be displayed on the main Provider page.
-description: A template repo for building and releasing Airflow provider packages.
+description: A provider for running Pulumi IaC with Airflow.
 # URL for where user should find the documentation for the Provider. This could be a link to the README,
 # an external docs site, etc.
-docs_url: https://github.com/astronomer/airflow-provider-sample/blob/main/README.md
+docs_url: https://github.com/astronomer/apache-airflow-providers-pulumi/blob/main/README.md
 
 # The next sections should be organized by module type (e.g. operators, hooks, functions, decorators, etc.).
 #
@@ -19,10 +19,13 @@ docs_url: https://github.com/astronomer/airflow-provider-sample/blob/main/README
 # value should be "sample_provider.hooks.sample_hook.SampleHook".
 
 hooks:
-  - module: sample_provider.hooks.sample_hook.SampleHook
+  - module: pulumi_provider.hooks.pulumi_auto.PulumiHook
 
 operators:
-  - module: sample_provider.operators.sample_operator.SampleOperator
+  - module: pulumi_provider.operators.pulumi_auto.PulumiBaseOperator
+  - module: pulumi_provider.operators.pulumi_auto.PulumiPreviewOperator
+  - module: pulumi_provider.operators.pulumi_auto.PulumiUpOperator
+  - module: pulumi_provider.operators.pulumi_auto.PulumiDestroyOperator
 
-sensors:
-  - module: sample_provider.sensors.sample_sensor.SampleSensor
+# sensors:
+#   - module: sample_provider.sensors.sample_sensor.SampleSensor

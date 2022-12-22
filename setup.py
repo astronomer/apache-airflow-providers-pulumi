@@ -7,27 +7,29 @@ with open("README.md", "r") as fh:
 
 """Perform the package airflow-provider-sample setup."""
 setup(
-    name='airflow-provider-sample',
+    name="airflow-providers-pulumi",
     version="0.0.1",
-    description='A sample provider package built by Astronomer.',
+    description="A Pulumi provider package built by Astronomer.",
     long_description=long_description,
-    long_description_content_type='text/markdown',
+    long_description_content_type="text/markdown",
     entry_points={
-        "apache_airflow_provider": [
-            "provider_info=sample_provider.__init__:get_provider_info"
-        ]
+        "airflow_provider": ["provider_info=pulumi_provider.__init__:get_provider_info"]
     },
-    license='Apache License 2.0',
-    packages=['sample_provider', 'sample_provider.hooks',
-              'sample_provider.sensors', 'sample_provider.operators'],
-    install_requires=['apache-airflow>=2.0'],
-    setup_requires=['setuptools', 'wheel'],
-    author='Pete DeJoy',
-    author_email='pete@astronomer.io',
-    url='http://astronomer.io/',
+    license="Apache License 2.0",
+    packages=[
+        "pulumi_provider",
+        "pulumi_provider.hooks",
+        # "pulumi_provider.sensors",
+        "pulumi_provider.operators",
+    ],
+    install_requires=["apache-airflow>=2.0", "pulumi>=3.0.0,<4.0.0"],
+    setup_requires=["setuptools", "wheel"],
+    author="Dylan Intorf",
+    author_email="dylan.intorf@astronomer.io",
+    url="http://astronomer.io/",
     classifiers=[
         "Framework :: Apache Airflow",
         "Framework :: Apache Airflow :: Provider",
     ],
-    python_requires='~=3.7',
+    python_requires="~=3.7",
 )

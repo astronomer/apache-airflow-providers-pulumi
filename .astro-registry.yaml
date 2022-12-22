@@ -10,7 +10,7 @@ display-name: Pulumi Provider
 description: A provider for running Pulumi IaC with Airflow.
 # URL for where user should find the documentation for the Provider. This could be a link to the README,
 # an external docs site, etc.
-docs_url: https://github.com/astronomer/apache-airflow-providers-pulumi/blob/main/README.md
+docs_url: https://github.com/astronomer/airflow-providers-pulumi/blob/main/README.md
 
 # The next sections should be organized by module type (e.g. operators, hooks, functions, decorators, etc.).
 #

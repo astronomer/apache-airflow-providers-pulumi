@@ -3,8 +3,7 @@ from typing import Any, Callable, Dict, Optional
 from airflow.exceptions import AirflowException
 from airflow.sensors.base import BaseSensorOperator
 from airflow.utils.decorators import apply_defaults
-
-from pulumi_provider.hooks.pulumi_auto import SampleHook
+from airflow_provider_pulumi.hooks.pulumi_auto import SampleHook
 
 
 class SampleSensor(BaseSensorOperator):

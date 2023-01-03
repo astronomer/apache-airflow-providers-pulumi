@@ -1,8 +1,7 @@
 from datetime import datetime
 
 from airflow.decorators import dag
-
-from pulumi_provider.operators.pulumi import PulumiPreviewOperator
+from airflow_provider_pulumi.operators.pulumi import PulumiPreviewOperator
 
 
 @dag(

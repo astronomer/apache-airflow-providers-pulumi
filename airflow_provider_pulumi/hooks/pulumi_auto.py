@@ -1,6 +1,5 @@
 import os
-from typing import Callable, Optional
-from urllib.parse import parse_qsl, urlencode
+from typing import Any, Callable, Dict
 
 from airflow.hooks.base import BaseHook
 from pulumi import automation as auto
@@ -27,17 +26,64 @@ class PulumiHook(BaseHook):
 
     def __init__(
         self,
-        project_name: str,
-        stack_name: str,
         pulumi_program: Callable,
         pulumi_conn_id: str = default_conn_name,
     ) -> None:
         super().__init__()
-        self.project_name = project_name
-        self.stack_name = stack_name
         self.pulumi_program = pulumi_program
         self.pulumi_conn_id = pulumi_conn_id
         self.backend_url = None
+        self.project_name = None
+        self.stack_name = None
+        self.env_vars: Dict[str, str] = {
+            k[8:]: v for k, v in os.environ.items() if k.startswith("PULUMI__")
+        }
+
+    @staticmethod
+    def get_connection_form_widgets() -> Dict[str, Any]:
+        """Returns connection widgets to add to connection form"""
+        from flask_appbuilder.fieldwidgets import (
+            BS3PasswordFieldWidget,
+            BS3TextFieldWidget,
+        )
+        from flask_babel import lazy_gettext
+        from wtforms import StringField, validators
+
+        return {
+            "extra__pulumi__project_name": StringField(
+                lazy_gettext("Project Name"),
+                widget=BS3TextFieldWidget(),
+                validators=[validators.data_required()],
+            ),
+            "extra__pulumi__stack_name": StringField(
+                lazy_gettext("Stack Name"),
+                widget=BS3TextFieldWidget(),
+                validators=[validators.data_required()],
+            ),
+            "extra__pulumi__config_passphrase": StringField(
+                lazy_gettext("Config Passphrase"),
+                widget=BS3PasswordFieldWidget(),
+            ),
+        }
+
+    @staticmethod
+    def get_ui_field_behaviour() -> Dict[str, Any]:
+        """Returns custom field behaviour"""
+        return {
+            "hidden_fields": ["schema", "login", "extra", "port"],
+            "relabeling": {
+                "host": "Backend URL",
+                "password": "Access Token",
+            },
+            "placeholders": {
+                "host": "pulumi backend url (leave blank for Pulumi console)",
+                "login": "pulumi username",
+                "password": "pulumi access token",
+                "extra__pulumi__project_name": "pulumi project name",
+                "extra__pulumi__stack_name": "pulumi stack name",
+                "extra__pulumi__config_passphrase": "config secrets passphrase",
+            },
+        }
 
     def get_conn(
         self,
@@ -48,45 +94,35 @@ class PulumiHook(BaseHook):
         :param headers: additional headers to be passed through as a dictionary
         :type headers: dict
         """
-        if self.pulumi_conn_id:
-            conn = self.get_connection(self.pulumi_conn_id)
+        conn = self.get_connection(self.pulumi_conn_id)
 
-            if conn.host and "://" in conn.host:
-                self.backend_url = conn.host
-            else:
-                # schema defaults to HTTP
-                schema = conn.schema if conn.schema else "https"
-                host = conn.host if conn.host else "api.pulumi.com"
-                self.backend_url = f"{schema}://{host}"
+        self.project_name = conn.extra_dejson.get("extra__pulumi__project_name")
+        self.stack_name = conn.extra_dejson.get("extra__pulumi__stack_name")
 
-            if conn.port:
-                self.backend_url = f"{self.backend_url}:{conn.port}"
-            if conn.login:
-                self.backend_url = f"{self.backend_url}/{conn.login}"
-            if conn.password:
-                os.environ["PULUMI_ACCESS_TOKEN"] = conn.password
+        self.backend_url = conn.host
 
-            if conn.extra:
-                try:
-                    query: Optional[str] = urlencode(conn.extra_dejson)
-                except TypeError:
-                    query = None
-                if query and conn.extra_dejson == dict(
-                    parse_qsl(query, keep_blank_values=True)
-                ):
-                    self.backend_url += "?" + query
+        if conn.password:
+            self.env_vars["PULUMI_ACCESS_TOKEN"] = conn.password
+
+        config_passphrase = conn.extra_dejson.get("extra__pulumi__config_passphrase")
+        if config_passphrase:
+            self.env_vars["PULUMI_CONFIG_PASSPHRASE"] = config_passphrase
+
+        stack_opts = auto.LocalWorkspaceOptions(
+            env_vars=self.env_vars,
+        )
+        if self.backend_url:
+            stack_opts.project_settings = auto.ProjectSettings(
+                name=self.project_name,  # type: ignore
+                runtime="python",
+                backend=auto.ProjectBackend(url=self.backend_url),  # type: ignore
+            )
 
         stack = auto.create_or_select_stack(
-            stack_name=self.stack_name,
+            stack_name=self.stack_name,  # type: ignore
             project_name=self.project_name,
             program=self.pulumi_program,
-            opts=auto.LocalWorkspaceOptions(
-                project_settings=auto.ProjectSettings(
-                    name=self.project_name,
-                    runtime="python",
-                    backend=auto.ProjectBackend(url=self.backend_url),
-                )
-            ),
+            opts=stack_opts,
         )
 
         return stack

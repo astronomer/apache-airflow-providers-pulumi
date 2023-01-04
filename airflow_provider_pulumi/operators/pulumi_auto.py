@@ -1,5 +1,5 @@
 import json
-from typing import Any, Callable, Dict
+from typing import Any, Callable, Dict, Optional
 
 from airflow.models.baseoperator import BaseOperator
 from airflow.utils.context import Context
@@ -11,26 +11,20 @@ class BasePulumiOperator(BaseOperator):
     def __init__(
         self,
         *args,
-        project_name: str,
-        stack_name: str,
         pulumi_program: Callable,
-        stack_config: Dict[str, Any] = None,
-        plugins: Dict[str, str] = None,
-        pulumi_conn_id: str = None,
+        stack_config: Optional[Dict[str, Any]] = None,
+        plugins: Optional[Dict[str, str]] = None,
+        pulumi_conn_id: Optional[str] = PulumiHook.default_conn_name,
         **kwargs,
     ):
         super().__init__(*args, **kwargs)
 
-        self.project_name = project_name
-        self.stack_name = stack_name
         self.pulumi_program = pulumi_program
         self.stack_config = stack_config or {}
         self.plugins = plugins or {}
         self.pulumi_conn_id = pulumi_conn_id
         self.stack: auto.Stack = None
         self.hook = PulumiHook(
-            project_name=self.project_name,
-            stack_name=self.stack_name,
             pulumi_program=self.pulumi_program,
             pulumi_conn_id=self.pulumi_conn_id,
         )

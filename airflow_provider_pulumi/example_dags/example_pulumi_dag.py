@@ -1,7 +1,11 @@
 from datetime import datetime
 
 from airflow.decorators import dag
-from airflow_provider_pulumi.operators.pulumi import PulumiPreviewOperator
+from airflow_provider_pulumi.operators.pulumi_auto import (
+    PulumiDestroyOperator,
+    PulumiPreviewOperator,
+    PulumiUpOperator,
+)
 
 
 @dag(
@@ -22,12 +26,26 @@ def example_pulumi():
 
     preview_s3_create_task = PulumiPreviewOperator(
         task_id="preview_s3_create",
-        project_name="aws",
-        stack_name="dev",
         pulumi_program=create_s3_bucket,
         stack_config={"aws:region": "us-west-2"},
         plugins={"aws": "v5.0.0"},
     )
+
+    s3_create_task = PulumiUpOperator(
+        task_id="s3_create",
+        pulumi_program=create_s3_bucket,
+        stack_config={"aws:region": "us-west-2"},
+        plugins={"aws": "v5.0.0"},
+    )
+
+    s3_destroy_task = PulumiDestroyOperator(
+        task_id="s3_destroy",
+        pulumi_program=create_s3_bucket,
+        stack_config={"aws:region": "us-west-2"},
+        plugins={"aws": "v5.0.0"},
+    )
+
+    preview_s3_create_task >> s3_create_task >> s3_destroy_task
 
 
 example_pulumi_dag = example_pulumi()

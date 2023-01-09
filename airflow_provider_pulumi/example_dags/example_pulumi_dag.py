@@ -1,11 +1,9 @@
 from datetime import datetime
 
 from airflow.decorators import dag
-from airflow_provider_pulumi.operators.pulumi_auto import (
-    PulumiDestroyOperator,
-    PulumiPreviewOperator,
-    PulumiUpOperator,
-)
+from airflow_provider_pulumi.operators.destroy import PulumiDestroyOperator
+from airflow_provider_pulumi.operators.preview import PulumiPreviewOperator
+from airflow_provider_pulumi.operators.up import PulumiUpOperator
 
 
 @dag(

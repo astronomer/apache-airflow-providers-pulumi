@@ -77,7 +77,6 @@ class PulumiHook(BaseHook):
             },
             "placeholders": {
                 "host": "pulumi backend url (leave blank for Pulumi console)",
-                "login": "pulumi username",
                 "password": "pulumi access token",
                 "extra__pulumi__project_name": "pulumi project name",
                 "extra__pulumi__stack_name": "pulumi stack name",

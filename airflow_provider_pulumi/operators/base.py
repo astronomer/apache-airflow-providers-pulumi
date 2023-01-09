@@ -3,7 +3,7 @@ from typing import Any, Callable, Dict, Optional
 
 from airflow.models.baseoperator import BaseOperator
 from airflow.utils.context import Context
-from airflow_provider_pulumi.hooks.pulumi_auto import PulumiHook
+from airflow_provider_pulumi.hooks.automation import PulumiHook
 from pulumi import automation as auto
 
 

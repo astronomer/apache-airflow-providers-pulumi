@@ -5,7 +5,7 @@ from airflow.hooks.base import BaseHook
 from pulumi import automation as auto
 
 
-class PulumiHook(BaseHook):
+class PulumiAutoHook(BaseHook):
     """
     Sample Hook that interacts with an HTTP endpoint the Python requests library.
 
@@ -76,7 +76,7 @@ class PulumiHook(BaseHook):
                 "password": "Access Token",
             },
             "placeholders": {
-                "host": "pulumi backend url (leave blank for Pulumi console)",
+                "host": "pulumi backend url (leave blank for Pulumi Service backend)",
                 "password": "pulumi access token",
                 "extra__pulumi__project_name": "pulumi project name",
                 "extra__pulumi__stack_name": "pulumi stack name",

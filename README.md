@@ -9,7 +9,7 @@ An airflow provider to:
 This package currently contains
 
 1 hook :
-- `airflow_provider_pulumi.hooks.automation.PulumiHook` - a hook to setup the Pulumi backend connection.
+- `airflow_provider_pulumi.hooks.automation.PulumiAutoHook` - a hook to setup the Pulumi backend connection.
 
 4 operators :
 - `airflow_provider_pulumi.operators.base.BasePulumiOperator` - the base operator for Pulumi.

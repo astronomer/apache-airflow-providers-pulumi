@@ -13,7 +13,7 @@ def get_provider_info():
         "description": "Airflow hooks and operators for Pulumi",  # Required
         "connection-types": [
             {
-                "hook-class-name": "airflow_provider_pulumi.hooks.pulumi_auto.PulumiHook",
+                "hook-class-name": "airflow_provider_pulumi.hooks.automation.PulumiAutoHook",
                 "connection-type": "pulumi",
             }
         ],

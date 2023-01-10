@@ -19,13 +19,13 @@ docs_url: https://github.com/astronomer/airflow-provider-pulumi/blob/main/README
 # value should be "sample_provider.hooks.sample_hook.SampleHook".
 
 hooks:
-  - module: airflow_provider_pulumi.hooks.pulumi_auto.PulumiHook
+  - module: airflow_provider_pulumi.hooks.automation.PulumiAutoHook
 
 operators:
-  - module: airflow_provider_pulumi.operators.pulumi_auto.PulumiBaseOperator
-  - module: airflow_provider_pulumi.operators.pulumi_auto.PulumiPreviewOperator
-  - module: airflow_provider_pulumi.operators.pulumi_auto.PulumiUpOperator
-  - module: airflow_provider_pulumi.operators.pulumi_auto.PulumiDestroyOperator
+  - module: airflow_provider_pulumi.operators.base.PulumiBaseOperator
+  - module: airflow_provider_pulumi.operators.preview.PulumiPreviewOperator
+  - module: airflow_provider_pulumi.operators.up.PulumiUpOperator
+  - module: airflow_provider_pulumi.operators.destroy.PulumiDestroyOperator
 
 # sensors:
 #   - module: sample_provider.sensors.sample_sensor.SampleSensor

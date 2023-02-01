@@ -11,4 +11,4 @@ class PulumiUpOperator(BasePulumiOperator):
         self.log.info(
             f"update summary: \n{json.dumps(result.summary.resource_changes, indent=4)}"
         )
-        return result
+        return result.summary.resource_changes

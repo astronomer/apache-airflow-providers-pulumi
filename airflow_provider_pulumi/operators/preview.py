@@ -11,4 +11,4 @@ class PulumiPreviewOperator(BasePulumiOperator):
         self.log.info(
             f"preview summary: \n{json.dumps(result.change_summary, indent=4)}"
         )
-        return result
+        return result.change_summary

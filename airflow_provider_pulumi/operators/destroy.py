@@ -11,4 +11,4 @@ class PulumiDestroyOperator(BasePulumiOperator):
         self.log.info(
             f"destroy summary: \n{json.dumps(result.summary.resource_changes, indent=4)}"
         )
-        return result
+        return result.summary.resource_changes

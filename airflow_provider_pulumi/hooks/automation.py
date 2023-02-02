@@ -7,16 +7,14 @@ from pulumi import automation as auto
 
 class PulumiAutoHook(BaseHook):
     """
-    Sample Hook that interacts with an HTTP endpoint the Python requests library.
+    PulumiAutoHook provides a custom Pulumi connection type and creates a stack for deploying
+    resources with Pulumi Automation API.
 
-    :param method: the API method to be called
-    :type method: str
-    :param pulumi_conn_id: connection that has the base API url i.e https://www.google.com/
-        and optional authentication credentials. Default headers can also be specified in
-        the Extra field in json format.
+    :param pulumi_program: the Pulumi program callable for creating infrastructure resources.
+    :type pulumi_program: Callable
+    :param pulumi_conn_id: connection that contains Pulumi stack backend URL, project name, stack
+        name, and other required details about connecting with Pulumi.
     :type pulumi_conn_id: str
-    :param auth_type: The auth type for the service
-    :type auth_type: AuthBase of python requests lib
     """
 
     conn_name_attr = "pulumi_conn_id"
@@ -87,12 +85,7 @@ class PulumiAutoHook(BaseHook):
     def get_conn(
         self,
     ) -> auto.Stack:
-        """
-        Returns http session to use with requests.
-
-        :param headers: additional headers to be passed through as a dictionary
-        :type headers: dict
-        """
+        """Returns Pulumi stack for creating, destroying, or previewing infrastructure resources."""
         conn = self.get_connection(self.pulumi_conn_id)
 
         self.project_name = conn.extra_dejson.get("extra__pulumi__project_name")

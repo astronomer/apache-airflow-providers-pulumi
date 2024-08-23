@@ -1,5 +1,21 @@
-# Pulumi Airflow Provider
+<!--suppress HtmlDeprecatedAttribute -->
+<p align="center" >
+  <a href="https://www.astronomer.io/">
+    <img src="https://www.pulumi.com/logos/brand/avatar-on-black.png"
+    alt="Pulumi Provider Logo"
+    style="display:block; margin-left: auto; margin-right: auto;" />
+  </a>
+</p>
+<h1 align="center" style="text-align: center;">
+   Pulumi Provider
+</h1>
+<h3 align="center" style="text-align: center;">
+  Pulumi IaaC in Airflow.
 
+Created with ❤️ by the CETA Team @ Astronomer
+</h3>
+
+# ⚠️ This project is a proof-of-concept and not officially supported nor maintained by Astronomer ⚠️
 
 An airflow provider to:
 - preview infrastructure resources before deployment

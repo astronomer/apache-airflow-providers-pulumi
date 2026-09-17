@@ -1,3 +1,8 @@
+## ⚠️ Discontinuation of project
+> This project is no longer actively maintained by Astronomer, but we'd love to see it live on in the community. While Astronomer has paused development and is not accepting new contributions, bug fixes or releases, the code is still here for you to explore, fork and adapt under the terms of its license.
+> Please note that it may not work with the latest dependencies or platforms, and it could contain security vulnerabilities. Astronomer can't offer guarantees or warranties for its use.
+> If you're interested in adopting or stewarding this project, we'd be happy to chat, reach us at oss@astronomer.io. Thanks for being part of the open-source journey and helping keep great ideas alive!
+
 <!--suppress HtmlDeprecatedAttribute -->
 <p align="center" >
   <a href="https://www.astronomer.io/">
@@ -14,8 +19,6 @@
 
 Created with ❤️ by the CETA Team @ Astronomer
 </h3>
-
-# ⚠️ This project is a proof-of-concept and not officially supported nor maintained by Astronomer ⚠️
 
 An airflow provider to:
 - preview infrastructure resources before deployment
